@@ -71,11 +71,11 @@ var Engine = (function(global) {
         this.srite = 'images/Heart.png'
         console.log('checkCollisions() is working, player:',player.x,player.y);
         if(player.y < 0){
-            ctx.drawImage(this.sprite,100,200);
+            //ctx.drawImage(this.sprite,100,200);
             //alert('You have succeeded!');
         }
         allEnemies.forEach(function(enemy){
-            console.log('checkCollisions() is working, enemy:',enemy.x,enemy.y);
+            //console.log('checkCollisions() is working, enemy:',enemy.x,enemy.y);
             if(Math.abs(enemy.y - player.y) < 10){
                 if(Math.abs(enemy.x - player.x) < 50){
                     player.x = 200;

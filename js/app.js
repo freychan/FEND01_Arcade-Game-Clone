@@ -1,4 +1,15 @@
-// 这是我们的玩家要躲避的敌人 
+var leftEdge = 0;
+var rightEdge = 400;
+var upEdge = -30;
+var downEdge = 380;
+var canvasWidth = 505;
+var playerCoordinateInitiate = {
+    x : 200,
+    y : 380
+};
+var horizStep = 100;
+var verticStep = 82;
+// 这是我们的玩家要躲避的敌人
 var Enemy = function(x,y,speed) {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
@@ -33,15 +44,37 @@ Player.prototype.update = function(dt){};
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+/*Player.prototype.canMoveLeft = function(){
+    return ((this.x >= leftEdge) ? true : false);
+};
+Player.prototype.canMoveRight = function(){
+    return ((this.x <= rightEdge) ? true : false);
+};*/
+Player.prototype.moveLeft = function(){
+    (this.x != leftEdge) ? (this.x -=horizStep) : (this.x = leftEdge);
+};
+Player.prototype.moveRight = function(){
+    (this.x != rightEdge) ? (this.x +=horizStep) : (this.x = rightEdge);
+};
+Player.prototype.moveUp = function(){
+    (this.y != upEdge) ? (this.y -= verticStep) : (this.y = upEdge);
+};
+Player.prototype.moveDown = function(){
+    (this.y != downEdge) ? (this.y += verticStep) : (this.y = downEdge);
+};
 Player.prototype.handleInput = function(movement){
     switch (movement){
-        case 'left': this.x -= 100;
+        case 'left':
+            this.moveLeft();
             break;
-        case 'right': this.x += 100;
+        case 'right':
+            this.moveRight();
             break;
-        case 'up': this.y -= 82;
+        case 'up':
+            this.moveUp();
             break;
-        case 'down': this.y += 82;
+        case 'down':
+            this.moveDown();
             break;
     }
 };
@@ -49,7 +82,7 @@ Player.prototype.handleInput = function(movement){
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
 var allEnemies = [new Enemy(0,52,100)];
-var player = new Player(200,380);
+var player = new Player(playerCoordinateInitiate.x,playerCoordinateInitiate.y);
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
 // 方法里面。你不需要再更改这段代码了。
 document.addEventListener('keyup', function(e) {
