@@ -67,23 +67,6 @@ var Engine = (function(global) {
         updateEntities(dt);
         checkCollisions();
     }
-    function checkCollisions(){
-        this.srite = 'images/Heart.png'
-        console.log('checkCollisions() is working, player:',player.x,player.y);
-        if(player.y < 0){
-            //ctx.drawImage(this.sprite,100,200);
-            //alert('You have succeeded!');
-        }
-        allEnemies.forEach(function(enemy){
-            //console.log('checkCollisions() is working, enemy:',enemy.x,enemy.y);
-            if(Math.abs(enemy.y - player.y) < 10){
-                if(Math.abs(enemy.x - player.x) < 50){
-                    player.x = 200;
-                    player.y = 380;
-                }
-            }
-        });
-    }
 
     /* 这个函数会遍历在 app.js 定义的存放所有敌人实例的数组，并且调用他们的 update()
      * 函数，然后，它会调用玩家对象的 update 方法，最后这个函数被 update 函数调用。
@@ -95,7 +78,22 @@ var Engine = (function(global) {
         });
         player.update();
     }
-
+    function checkCollisions(){
+        var collisionThreshold = {
+            x : 80,
+            y : 10
+        };
+        console.log('checkCollisions() is working, player:',player.x,player.y);
+        allEnemies.forEach(function(enemy){
+            //console.log('checkCollisions() is working, enemy:',enemy.x,enemy.y);
+            if(Math.abs(enemy.y - player.y) < collisionThreshold.y){
+                if(Math.abs(enemy.x - player.x) < collisionThreshold.x){
+                    player.x = 200;
+                    player.y = 380;
+                }
+            }
+        });
+    }
     /* 这个函数做了一些游戏的初始渲染，然后调用 renderEntities 函数。记住，这个函数
      * 在每个游戏的时间间隙都会被调用一次（或者说游戏引擎的每个循环），因为这就是游戏
      * 怎么工作的，他们就像是那种每一页上都画着不同画儿的书，快速翻动的时候就会出现是
@@ -127,6 +125,20 @@ var Engine = (function(global) {
         }
 
         renderEntities();
+        checkState();
+        switch (state){
+            case gameState.begin :
+                break;
+            case gameState.win :
+                ctx.beginPath();
+                ctx.rect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = "rgba(255,255,255,0.3)";
+                ctx.fill();
+                drawLargeText('Congratulations!',"#f1c40f",canvas.width / 2,canvas.height / 2 - 45);
+                drawLargeText('You WIN!',"#f1c40f",canvas.width / 2,canvas.height / 2 + 45);
+                drawSmallText('Press \'Enter\' to restart!',"white",canvas.width / 2,canvas.height / 2 + 120);
+                break;
+        }
     }
 
     /* 这个函数会在每个时间间隙被 render 函数调用。他的目的是分别调用你在 enemy 和 player
@@ -141,6 +153,24 @@ var Engine = (function(global) {
         player.render();
     }
 
+    function drawLargeText(text,color,x,y){
+        ctx.font = "50pt Impact";
+        ctx.textAlign = "center";
+        ctx.fillStyle = color;
+        ctx.fillText(text,x,y);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2.5;
+        ctx.strokeText(text,x,y);
+    }
+    function drawSmallText(text,color,x,y){
+        ctx.font = "18pt Impact";
+        ctx.textAlign = "center";
+        ctx.fillStyle = color;
+        ctx.fillText(text,x,y);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 1;
+        ctx.strokeText(text,x,y);
+    }
     /* 这个函数现在没干任何事，但是这会是一个好地方让你来处理游戏重置的逻辑。可能是一个
      * 从新开始游戏的按钮，也可以是一个游戏结束的画面，或者其它类似的设计。它只会被 init()
      * 函数调用一次。
