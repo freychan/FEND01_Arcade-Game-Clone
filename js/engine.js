@@ -78,6 +78,7 @@ var Engine = (function(global) {
         });
         player.update();
     }
+    //碰撞检测函数
     function checkCollisions(){
         var collisionThreshold = {
             x : 80,
@@ -126,6 +127,7 @@ var Engine = (function(global) {
 
         renderEntities();
         checkState();
+        //设置不同的游戏状态所需要绘制的不同画面提示信息（注意绘制顺序有先后）
         switch (state){
             case gameState.begin :
                 break;
@@ -136,7 +138,7 @@ var Engine = (function(global) {
                 ctx.fill();
                 drawLargeText('Congratulations!',"#f1c40f",canvas.width / 2,canvas.height / 2 - 45);
                 drawLargeText('You WIN!',"#f1c40f",canvas.width / 2,canvas.height / 2 + 45);
-                drawSmallText('Press \'Enter\' to restart!',"white",canvas.width / 2,canvas.height / 2 + 120);
+                drawSmallText('Press \"Enter\" to restart!',"white",canvas.width / 2,canvas.height / 2 + 120);
                 break;
         }
     }
@@ -152,7 +154,7 @@ var Engine = (function(global) {
 
         player.render();
     }
-
+    //绘制大字的函数
     function drawLargeText(text,color,x,y){
         ctx.font = "50pt Impact";
         ctx.textAlign = "center";
@@ -162,13 +164,14 @@ var Engine = (function(global) {
         ctx.lineWidth = 2.5;
         ctx.strokeText(text,x,y);
     }
+    //绘制小字的函数
     function drawSmallText(text,color,x,y){
-        ctx.font = "18pt Impact";
+        ctx.font = "20pt Impact";
         ctx.textAlign = "center";
         ctx.fillStyle = color;
         ctx.fillText(text,x,y);
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1.5;
         ctx.strokeText(text,x,y);
     }
     /* 这个函数现在没干任何事，但是这会是一个好地方让你来处理游戏重置的逻辑。可能是一个
